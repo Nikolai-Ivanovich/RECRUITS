@@ -81,13 +81,13 @@ bool isAllStop(char line[RECRUITS])
 void reverse(char line[RECRUITS])
 {
     // all number [-∞;-2]
-    int flag = -10;
+    int iterationSkipFlag = -10;
 
     for (int i = 0; i < RECRUITS; i++)
     {
         if (line[i] == '>' and line[i + 1] == '<')
         {
-            if (flag == i - 1)
+            if (iterationSkipFlag == i - 1)
             {
                 continue;
             }
@@ -95,12 +95,12 @@ void reverse(char line[RECRUITS])
             {
                 line[i] = '<';
                 line[i + 1] = '>';
-                flag = i;
+                iterationSkipFlag = i;
             }
         }
         else
         {
-            if (flag == i - 1)
+            if (iterationSkipFlag == i - 1)
             {
                 continue;
             }
