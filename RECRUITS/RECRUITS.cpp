@@ -1,20 +1,131 @@
-﻿// RECRUITS.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿/*
+2. НОВОБРАНЦЫ. 
++Новобранцы выстроены в шеренгу. 
++По команде НАЛЕ–ВО! одни из них поворачиваются налево, а другие – направо. 
++Это есть начальное положение шеренги. 
+Далее каждый новобранец действует следующим образом: увидев перед собой лицо соседа, он ровно через секунду поворачивается кругом.
+В конце концов повороты прекратятся. Тогда сержант подает звуковой сигнал.
+*/
 
 #include <iostream>
+#include <windows.h>
+using namespace std;
+#define RECRUITS 15
+
+char generateRandomValue();
+void toLeft(char line[RECRUITS]);
+void reverse(char line[RECRUITS]);
+bool isAllStop(char line[RECRUITS]);
+void showLine(char line[RECRUITS]);
+void sergeantYelling();
 
 int main()
 {
-    std::cout << "Hello Worыld!\n";
+    char line[RECRUITS];
+
+    toLeft(line);
+
+    while (true)
+    {
+        reverse(line);
+        if (isAllStop(line) == true)
+        {
+            showLine(line);
+            sergeantYelling();
+            break;
+        }
+        showLine(line);
+        Sleep(1000);
+        
+    }
+    
+    return 0;
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+void sergeantYelling()
+{
+    Beep((DWORD)659.26, 200);
+    Beep((DWORD)659.26, 200);
+    Sleep(200);
+    Beep((DWORD)659.26, 200);
+    Sleep(100);
+    Beep((DWORD)523.26, 200);
+    Beep((DWORD)659.26, 200);
+    Sleep(200);
+    Beep((DWORD)783.98, 200);
+    Sleep(400);
+    Beep((DWORD)391.99, 200);
+}
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+void showLine(char line[RECRUITS])
+{
+    for (int i = 0; i < RECRUITS; i++)
+    {
+        cout << line[i] << " ";
+    }
+    cout << endl;
+}
+
+bool isAllStop(char line[RECRUITS])
+{
+    for (int i = 0; i < RECRUITS; i++)
+    {
+        if (line[i] == '>' and line[i + 1] == '<')
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+void reverse(char line[RECRUITS])
+{
+    // all number [-∞;-2]
+    int flag = -10;
+
+    for (int i = 0; i < RECRUITS; i++)
+    {
+        if (line[i] == '>' and line[i + 1] == '<')
+        {
+            if (flag == i - 1)
+            {
+                continue;
+            }
+            else
+            {
+                line[i] = '<';
+                line[i + 1] = '>';
+                flag = i;
+            }
+        }
+        else
+        {
+            if (flag == i - 1)
+            {
+                continue;
+            }
+            else
+            {
+                line[i] = line[i];
+                line[i + 1] = line[i + 1];
+            }
+        }
+    }
+}
+
+void toLeft(char line[RECRUITS])
+{
+    for (int i = 0; i < RECRUITS; i++)
+    {
+        line[i] = generateRandomValue();
+    }
+}
+
+char generateRandomValue()
+{
+    int value = 1 + rand() % 2;
+    if (value == 1)
+        return '<';
+    else
+        return '>';
+}
